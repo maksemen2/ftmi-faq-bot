@@ -1,11 +1,18 @@
 from typing import AsyncIterable
 
 from dishka import Provider, Scope, provide
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncConnection, AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import (
+    AsyncConnection,
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 
 from config.db import DBSettings
 from domain.repository.question import QuestionRepository
 from infrastructure.database.repository.question import SQLAlchemyQuestionRepository
+
 
 class DBProvider(Provider):
     scope = Scope.APP
@@ -15,7 +22,7 @@ class DBProvider(Provider):
         engine = create_async_engine(config.dsn)
         yield engine
         await engine.dispose()
-        
+
     @provide
     async def get_connection(
         self, engine: AsyncEngine
@@ -35,13 +42,12 @@ class DBProvider(Provider):
     ) -> AsyncIterable[AsyncSession]:
         async with pool() as session:
             yield session
-            
+
+
 class RepositoryProvider(Provider):
     scope = Scope.REQUEST
-    
+
     @provide
-    def get_questions_repository(
-        self, session: AsyncSession
-    ) -> QuestionRepository:
+    def get_questions_repository(self, session: AsyncSession) -> QuestionRepository:
         repo = SQLAlchemyQuestionRepository(session)
         return repo

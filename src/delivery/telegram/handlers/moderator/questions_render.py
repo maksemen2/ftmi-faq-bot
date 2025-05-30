@@ -1,17 +1,19 @@
 from aiogram import Bot
-from aiogram.types import Message, CallbackQuery
-from domain.entities.question import QuestionEntity
-from domain.services.question import QuestionService
-from delivery.telegram.keyboards.moderator.questions_edit import (
-    build_listed_questions_edit_kb,
-    build_question_edit_kb,
-    build_agree_kb,
-)
+from aiogram.types import CallbackQuery, Message
+
 from delivery.telegram.keyboards.callback_data import (
+    QUESTIONS_PER_PAGE,
     ListedQuestionCallbackData,
     QuestionEditAction,
-    QUESTIONS_PER_PAGE,
 )
+from delivery.telegram.keyboards.moderator.questions_edit import (
+    build_agree_kb,
+    build_listed_questions_edit_kb,
+    build_question_edit_kb,
+)
+from domain.entities.question import QuestionEntity
+from domain.services.question import QuestionService
+
 
 async def render_list(
     target: Message | CallbackQuery,
@@ -26,6 +28,7 @@ async def render_list(
     else:
         await target.answer(text, reply_markup=kb)
 
+
 async def render_detail(
     target: Message | CallbackQuery,
     question: QuestionEntity,
@@ -37,6 +40,7 @@ async def render_detail(
         await target.message.edit_text(text, reply_markup=kb)
     else:
         await target.answer(text, reply_markup=kb)
+
 
 async def render_delete_confirm(
     target: Message | CallbackQuery,
@@ -51,6 +55,6 @@ async def render_delete_confirm(
         )
     else:
         await target.answer(
-        "Вы уверены, что хотите удалить этот вопрос?",
-        reply_markup=kb,
-    )
+            "Вы уверены, что хотите удалить этот вопрос?",
+            reply_markup=kb,
+        )

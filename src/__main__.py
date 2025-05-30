@@ -11,9 +11,10 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 
+
 async def main():
     container = create_dishka()
-    
+
     tg_settings = await container.get(TelegramSettings)
     await run_bot(
         container,

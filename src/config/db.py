@@ -1,12 +1,17 @@
-from typing import Optional
-from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import SecretStr
 from pathlib import Path
+from typing import Optional
+
+from pydantic import SecretStr
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class DBSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DB_", env_file=Path(__file__).resolve().parent.parent.parent / ".env", extra="ignore")
-    
+    model_config = SettingsConfigDict(
+        env_prefix="DB_",
+        env_file=Path(__file__).resolve().parent.parent.parent / ".env",
+        extra="ignore",
+    )
+
     user: Optional[str] = None
     password: Optional[SecretStr] = None
     host: Optional[str] = None
