@@ -28,7 +28,7 @@ def build_listed_questions_view_kb(
         builder.adjust(1)
 
     show_prev_button = current_page > 0
-    show_next_button = len(questions) > QUESTIONS_PER_PAGE
+    show_next_button = len(questions) == QUESTIONS_PER_PAGE
 
     pagination_buttons_added_count = 0
     if show_prev_button:
